@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Download, getBucketInfo } from '../helpers/storage';
+import { deleteBucketWithContent, Download, getBucketInfo } from '../helpers/storage';
 import { getOwnerName } from '../helpers/getuser';
 import { supabase } from '../supabase/client';
 import { VscGithub } from "react-icons/vsc";
@@ -115,6 +115,16 @@ export const Files = ({ bucketId }) => {
   //   const handleDeleteBucket = async () => {
   //    await deleteBucketWithContent(bucketId)
   // };
+
+  const handleDeleteBucket = async () => {
+    const result = await deleteBucketWithContent(bucketId);
+    if (result.success) {
+      console.log('Bucket eliminado exitosamente');
+      // Aquí podrías redirigir al usuario o actualizar el estado
+    } else {
+      console.error('Error al eliminar el bucket:', result.error);
+    }
+  };
     
   return (
     <div className='bg-[#0d1117] h-screen text-white px-12 py-5'>
@@ -161,18 +171,10 @@ export const Files = ({ bucketId }) => {
             />
           </label>
         )}
-          <button className='flex px-4 py-2 rounded-lg items-center gap-1 bg-[#238636] hover:bg-[#29903b]'>
+          <button onClick={handleDownload} className='flex px-4 py-2 rounded-lg items-center gap-1 bg-[#238636] hover:bg-[#29903b]'>
             <IoCode className='text-white' />
             <span className='text-sm font-medium'>Code</span>
           </button>
-          {bucketInfo && bucketInfo.owner === session?.user?.id && (
-            <button 
-              // onClick={handleDeleteBucket} 
-              className="text-red-500 bg-[#212830] px-4 py-2 rounded-lg mt-4 hover:bg-[#262c36]"
-            >
-              Eliminar Bucket
-            </button>
-          )}
         </div>
       </div>
       <div className='mt-4'>
@@ -198,16 +200,20 @@ export const Files = ({ bucketId }) => {
           )}
         </div>
         <div id='descripcion' className='mt-4'>
-          <h2 className='text-lg font-bold'>Descripción:</h2>
+          <h2 className='text-lg font-bold'>Descripción</h2>
           <p>{bucketDescription || "No hay descripción disponible para este bucket."}</p>
         </div>
-        <div id='descargar'>
-          <button className="text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700"
-            onClick={handleDownload}
-          >Descargar</button>
+        <div>
+        {bucketInfo && bucketInfo.owner === session?.user?.id && (
+            <button 
+              className="text-red-500 bg-[#212830] px-4 py-2 rounded-lg mt-4 hover:bg-[#262c36]"
+              onClick={handleDeleteBucket}
+            >
+              Eliminar Bucket
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 };
-

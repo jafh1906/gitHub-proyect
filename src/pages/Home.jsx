@@ -13,7 +13,7 @@ export const Home = () => {
     <main className='flex'>
         <TopRepositories/>
         <PostRepositorys/>
-        {/* <News/> */}
+        <News/>
     </main>
     </>
   )

@@ -19,7 +19,7 @@ export const PostRepositorys = () => {
     }, []);
 
     return (
-        <div className='w-screen px-10 mt-10'>
+        <div className='w-screen px-6 mt-10'>
             <div className='flex justify-between'>
                 <h1 className='text-white text-[24px] font-medium'>Home</h1>
                 <div className='flex items-center gap-5'>
@@ -30,9 +30,9 @@ export const PostRepositorys = () => {
                     </button>
                 </div>
             </div>
-            <div id='post' className='bg-[#0d1117] border-[#3d444d] border rounded-md p-4 mt-5'>
+            <div id='post' className=''>
                 {buckets.map((bucket) => (
-                    <div key={bucket.id} className='mb-4'>
+                    <div key={bucket.id} className='bg-[#0d1117] border-[#3d444d] border rounded-md p-4 mt-5'>
                         <div className='flex items-center gap-2'>
                             <VscGithub className='text-[#2b2e36] bg-black rounded-full text-2xl'/>
                             <p className='text-white'>{bucket.username}</p>

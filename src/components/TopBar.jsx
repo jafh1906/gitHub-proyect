@@ -1,14 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { CgMenu } from "react-icons/cg";
-import { VscAdd } from "react-icons/vsc";
-import { VscTriangleDown } from "react-icons/vsc";
-import { VscIssues } from "react-icons/vsc";
-import { VscGithub } from "react-icons/vsc";
+import { VscAdd, VscTriangleDown, VscIssues, VscGithub, VscGitPullRequest, VscInbox } from "react-icons/vsc";
 import logoGitHub1 from "../assets/logoGitHubB.png";
-import { VscGitPullRequest } from "react-icons/vsc";
-import { VscInbox } from "react-icons/vsc";
-import { FiSearch } from "react-icons/fi";
-import { FiBookOpen } from "react-icons/fi";
+import { FiSearch, FiBookOpen } from "react-icons/fi";
 import { RiGitRepositoryLine } from "react-icons/ri";
 import { VscGithubProject } from "react-icons/vsc";
 import { GoPackage } from "react-icons/go";
@@ -16,37 +10,40 @@ import { FaRegStar } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from '../helpers/fuctions';
 
-
-export const TopBar = ({containerNav}) => {
+export const TopBar = ({ containerNav }) => {
   const [visible, setIsVisible] = useState(false);
   const refContainInput = useRef(null);
 
   const navigate = useNavigate();
 
-  const Logout = async () => { // funcion para cerrar sesion acuerdate de moverla 
-      const success = await signOut();
-
-      if (success) {
-          navigate('/');
-      } else {
-          alert('Error al cerrar sesión');
-      }
+  const Logout = async () => {
+    const success = await signOut();
+    if (success) {
+      navigate('/');
+    } else {
+      alert('Error al cerrar sesión');
+    }
   };
 
   const showEntry = () => {
     setIsVisible(true);
   };
 
+  const toggleLogoutVisibility = () => {
+    setLogoutVisible((prev) => !prev);
+  };
+
   const clickFuera = (event) => {
-    if (refContainInput.current && !refContainInput.current.contains(event.target)) {
+    if (
+      refContainInput.current && !refContainInput.current.contains(event.target)
+    ) {
       setIsVisible(false);
+      setLogoutVisible(false);
     }
   };
 
   useEffect(() => {
-
     document.addEventListener('mousedown', clickFuera);
-
     return () => {
       document.removeEventListener('mousedown', clickFuera);
     };
@@ -83,12 +80,12 @@ export const TopBar = ({containerNav}) => {
                 to search
               </span>
             </button>
-            <div className='flex items-center gap-2'>
+            <div className='hiiden lg:flex items-center gap-2'>
               <button className='flex items-center gap-2 p-1.5 border border-[#9198a1] rounded-lg'>
                 <VscAdd className='text-[#9198a1]' />
                 <VscTriangleDown className='text-[#9198a1] text-sm' />
               </button>
-              <button className='flex items-center justify-center'>
+              <button className='flex md:hidden lg:block items-center justify-center'>
                 <VscIssues className='text-[#9198a1] text-3xl p-1 border border-[#9198a1] rounded-lg' />
               </button>
               <button>
@@ -97,11 +94,15 @@ export const TopBar = ({containerNav}) => {
               <button>
                 <VscInbox className='text-[#9198a1] text-3xl p-1 border border-[#9198a1] rounded-lg' />
               </button>
-              <button>
+              <button id='options' onClick={toggleLogoutVisibility}>
                 <VscGithub className='text-[#2d3036] text-3xl' />
               </button>
-              <button onClick={Logout} className='text-white bg-red-300 p-2'>log out</button>
             </div>
+                <button
+                  onClick={Logout}
+                  className='text-white font-bold bg-slate-700 py-1.5 px-2 text-sm rounded-md'
+                >log out
+                </button>
           </div>
         </div>
 
