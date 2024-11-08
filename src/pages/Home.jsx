@@ -9,25 +9,27 @@ export const Home = () => {
   return (
     <>
     <div className=''>
-      <header>
+      <header className=''>
           <TopBar containerNav={false}/>
       </header>
       <main className='lg:flex lg:flex-row flex-col'>
-        <div>
+        <div className='sticky top-0 h-screen overflow-auto'>
           <TopRepositories/>
         </div>
-        <div className='lg:flex lg:flex-row flex-col w-full'>
-          <div className='lg:w-[65%]'>
-            <PostRepositorys/>
+        <div>
+          <div className='lg:flex lg:flex-row flex-col w-full'>
+            <div className='lg:w-[65%]'>
+              <PostRepositorys/>
+            </div>
+            <div className='lg:w-[35%] hidden lg:block'>
+              <News/>
+            </div>
           </div>
-          <div className='lg:w-[35%] hidden lg:block'>
-            <News/>
+          <div>
+            <Footer/>
           </div>
         </div>
       </main>
-      <footer>
-        <Footer/>
-      </footer>
     </div>
     </>
   )

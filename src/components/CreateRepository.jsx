@@ -38,10 +38,9 @@ export const CreateRepository = () => {
         if (error) {
             alert(`Error al crear el bucket: ${error.message}`);
         } else {
-            alert(`Bucket creado con éxito: ${bucketName}`);
             navigate(`/Repositorys/${data?.id}`);
             setBucketName('');
-            setDescription(''); // Limpiar descripción
+            setDescription('');
         }
     }
     

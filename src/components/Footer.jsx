@@ -5,7 +5,7 @@ import { AiOutlineGithub } from "react-icons/ai";
 export const Footer = () => {
   return (
     <>
-    <div className='lg:flex flex flex-wrap justify-center items-center text-[#9198a1] text-xs gap-3 pt-14 pb-4'>
+    <div className='lg:flex flex flex-wrap ml-2 items-center text-[#9198a1] text-xs gap-3 pt-14 pb-4'>
         <div className='flex items-center gap-2'>
             <AiOutlineGithub className='bg-[#0d1117] hover:text-[#424850] cursor-pointer rounded-full text-2xl'/>
             <p>© 2024 GitHub, Inc</p>

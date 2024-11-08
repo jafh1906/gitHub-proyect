@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { deleteBucketWithContent, Download, getBucketInfo } from '../helpers/storage';
+import { deleteBucketCascade, Download, getBucketInfo } from '../helpers/storage';
 import { getOwnerName } from '../helpers/getuser';
 import { supabase } from '../supabase/client';
 import { VscGithub } from "react-icons/vsc";
@@ -7,8 +7,8 @@ import { RiGitBranchLine } from "react-icons/ri";
 import { PiTagBold } from "react-icons/pi";
 import { IoCode } from "react-icons/io5";
 import { MdFolder } from "react-icons/md";
-import { useSession } from '@supabase/auth-helpers-react'; 
-import { useNavigate } from 'react-router-dom';
+import { useSession } from '@supabase/auth-helpers-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Files = ({ bucketId }) => {
   const [bucketInfo, setBucketInfo] = useState(null);
@@ -110,21 +110,19 @@ export const Files = ({ bucketId }) => {
       console.log("Descargando archivos del bucket...");
       await Download(bucketId); // Llama a la función Download pasando el bucketId
     };
-    
-    
-  //   const handleDeleteBucket = async () => {
-  //    await deleteBucketWithContent(bucketId)
-  // };
 
-  const handleDeleteBucket = async () => {
-    const result = await deleteBucketWithContent(bucketId);
-    if (result.success) {
-      console.log('Bucket eliminado exitosamente');
-      // Aquí podrías redirigir al usuario o actualizar el estado
-    } else {
-      console.error('Error al eliminar el bucket:', result.error);
-    }
-  };
+    const handleDeleteBucket = async () => {
+      const { error } = await deleteBucketCascade(bucketId);
+      
+      if (error) {
+        console.error('Error al eliminar el bucket en cascada:', error);
+        alert('No se pudo eliminar el bucket.');
+      } else {
+        alert('Bucket eliminado exitosamente.');
+        navigate("/Home")
+        // Aquí puedes actualizar el estado o redirigir al usuario, si es necesario
+      }
+    };
     
   return (
     <div className='bg-[#0d1117] h-screen text-white px-12 py-5'>
@@ -180,12 +178,13 @@ export const Files = ({ bucketId }) => {
       <div className='mt-4'>
         <div className='flex items-center gap-1.5 bg-[#151b23] py-4 px-3 rounded-t-md border'>
           <VscGithub className='text-[#26292F] bg-black rounded-full text-2xl' />
-          <p className='text-sm font-medium'>{userName}</p>
+          <Link to={`/OverviewProfile?user=${bucketInfo?.owner}`}
+           className='text-sm font-medium'>{userName}</Link>
         </div>
-        <div id='archivos' className='border py-2 px-3'>
+        <div id='archivos' className='border-b border-x rounded-b-md'>
           {Object.keys(files).length > 0 ? (
             Object.entries(files).map(([folderName, files]) => (
-              <div key={folderName} className="mb-3 flex items-center gap-2">
+              <div key={folderName} className="mb-3 flex items-center gap-2 py-2 px-3 border-t">
                 <MdFolder  className='text-[#9198a1] text-xl'/>
                 <p className="">{folderName}</p>
                 <ul className="pl-4">
@@ -196,7 +195,7 @@ export const Files = ({ bucketId }) => {
               </div>
             ))
           ) : (
-            <p>No se encontraron archivos.</p>
+            <p className='pl-3 py-2 font-medium'>Agrega un archivo a tu repositorio</p>
           )}
         </div>
         <div id='descripcion' className='mt-4'>

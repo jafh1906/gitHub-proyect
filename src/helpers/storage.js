@@ -1,6 +1,7 @@
 import { supabase } from "../supabase/client";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { useParams } from "react-router-dom";
 
 export const createBucket = async (bucketName, description) => {
     // Crear el bucket
@@ -192,114 +193,46 @@ export const Download = async (bucketName) => {
         });
     };
 
-    export const deleteBucketWithContent = async (bucketId) => {
+    export const deleteBucketCascade = async (bucketId) => {
         try {
-          // Función recursiva para listar todos los archivos dentro de una carpeta
-          const listAllFiles = async (path = '') => {
-            const { data: files, error: listError } = await supabase.storage
+          // Listar todos los archivos dentro del bucket
+          const { data: files, error: listError } = await supabase.storage
+            .from(bucketId)
+            .list('', { limit: 100 });
+      
+          if (listError) {
+            console.error('Error al listar archivos:', listError);
+            return { error: listError };
+          }
+      
+          // Eliminar cada archivo
+          for (const file of files) {
+            const { error: deleteError } = await supabase.storage
               .from(bucketId)
-              .list(path, { limit: 100 });
-      
-            if (listError) {
-              console.error('Error al listar archivos del bucket:', listError);
-              return [];
-            }
-      
-            let filePaths = [];
-      
-            for (const file of files) {
-              if (file.type === 'file') {
-                filePaths.push(`${path ? `${path}/` : ''}${file.name}`);
-              } else if (file.type === 'folder') {
-                const subfolderFiles = await listAllFiles(`${path ? `${path}/` : ''}${file.name}`);
-                filePaths = filePaths.concat(subfolderFiles);
-              }
-            }
-      
-            return filePaths;
-          };
-      
-          // Obtener todas las rutas de archivos dentro del bucket
-          const filePaths = await listAllFiles();
-      
-          // Eliminar todos los objetos dentro del bucket
-          if (filePaths.length > 0) {
-            const { error: deleteFilesError } = await supabase.storage
-              .from(bucketId)
-              .remove(filePaths);
-      
-            if (deleteFilesError) {
-              console.error('Error al eliminar archivos del bucket:', deleteFilesError);
-              return { success: false, error: deleteFilesError.message };
-            }
-      
-            // Verificar si aún quedan archivos después de intentar eliminarlos
-            const { data: remainingFiles } = await supabase.storage
-              .from(bucketId)
-              .list('', { limit: 100 });
-      
-            if (remainingFiles.length > 0) {
-              console.warn('Quedaron archivos después del intento de eliminación:', remainingFiles);
-              return { success: false, error: 'No se pudieron eliminar todos los archivos.' };
+              .remove([file.name]);
+              
+            if (deleteError) {
+              console.error(`Error al eliminar archivo ${file.name}:`, deleteError);
+              return { error: deleteError };
             }
           }
       
-          // Espera de 1 segundo antes de intentar eliminar el bucket
-          await new Promise(resolve => setTimeout(resolve, 1000));
-      
           // Eliminar el bucket vacío
-          const { error: deleteBucketError } = await supabase.storage
-            .deleteBucket(bucketId);
-      
-          if (deleteBucketError) {
-            console.error('Error al eliminar el bucket:', deleteBucketError);
-            return { success: false, error: deleteBucketError.message };
+          const { error: bucketError } = await supabase.storage.emptyBucket(bucketId); //deleteBucket
+          if (bucketError) {
+            console.error('Error al eliminar el bucket:', bucketError);
+            return { error: bucketError };
           }
       
           console.log(`Bucket ${bucketId} eliminado exitosamente.`);
           return { success: true };
         } catch (error) {
-          console.error('Error inesperado al eliminar el bucket:', error);
-          return { success: false, error: error.message };
+          console.error('Error al eliminar el bucket en cascada:', error);
+          return { error };
         }
       };
 
-//     // Función para eliminar todos los archivos y luego el bucket
-// export const deleteBucketWithContent = async (bucketId) => {
-//     try {
-//       // Obtener todos los archivos del bucket
-//       const { data: files, error: listError } = await supabase.storage
-//         .from(bucketId)
-//         .list('', { limit: 100, offset: 0 });
-  
-//       if (listError) {
-//         throw new Error(`Error al listar archivos en el bucket: ${listError.message}`);
-//       }
-  
-//       // Borrar todos los archivos encontrados
-//       if (files.length > 0) {
-//         const filePaths = files.map(file => file.name);
-//         const { error: deleteFilesError } = await supabase.storage
-//           .from(bucketId)
-//           .remove(filePaths);
-  
-//         if (deleteFilesError) {
-//           throw new Error(`Error al eliminar archivos en el bucket: ${deleteFilesError.message}`);
-//         }
-//       }
-  
-//       // Eliminar el bucket después de borrar los archivos
-//       const { error: deleteBucketError } = await supabase.storage
-//         .deleteBucket(bucketId);
-  
-//       if (deleteBucketError) {
-//         throw new Error(`Error al eliminar el bucket: ${deleteBucketError.message}`);
-//       }
-  
-//       console.log(`Bucket ${bucketId} eliminado exitosamente.`);
-//       return { success: true };
-//     } catch (error) {
-//       console.error(error.message);
-//       return { success: false, error: error.message };
-//     }
-//   };
+      export const getUserIdFromURL = () => {
+        const { userId } = useParams();
+        return userId;
+      };

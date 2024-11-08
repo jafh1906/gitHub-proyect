@@ -11,7 +11,9 @@ export const PostRepositorys = () => {
         const fetchBuckets = async () => {
             const { data, error } = await getOtherUserBuckets();
             if (!error) {
-                setBuckets(data);
+                // Mezcla los buckets en un orden aleatorio
+                const shuffledBuckets = data.sort(() => 0.5 - Math.random());
+                setBuckets(shuffledBuckets);
             }
         };
 

@@ -27,7 +27,7 @@ export const TopRepositories = () => {
     }, []);
 
     return (
-        <div className='lg:h-full h-auto pb-5 px-6 bg-[#0d1117] lg:border-r border-b border-[#9198a1]'>
+        <div className='lg:h-full static  h-auto pb-5 px-6 bg-[#0d1117] lg:border-r border-b border-[#9198a1]'>
             <div className='flex items-center justify-between lg:pt-10 pt-5'>
                 <h1 className='text-white font-semibold text-sm'>Top repositories</h1>
                 <Link to='/NewRepository' className='bg-[#29903b] flex items-center justify-center gap-1 py-1 w-[60px] rounded-md'>
