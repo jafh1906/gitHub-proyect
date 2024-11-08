@@ -146,11 +146,11 @@ export const Files = ({ bucketId }) => {
             <RiGitBranchLine className='text-[#9198A1]' />
             <span className='font-medium text-sm'>main</span>
           </button>
-          <button className='flex items-center px-4 py-2 gap-2 rounded-lg hover:bg-[#262c36]'>
+          <button className='hidden lg:flex items-center px-4 py-2 gap-2 rounded-lg hover:bg-[#262c36]'>
             <RiGitBranchLine className='text-[#9198A1]' />
             <span className='font-medium text-[#9198A1] text-sm'>Branch</span>
           </button>
-          <button className='flex items-center px-4 py-2 gap-2 rounded-lg hover:bg-[#262c36]'>
+          <button className='hidden lg:flex items-center px-4 py-2 gap-2 rounded-lg hover:bg-[#262c36]'>
             <PiTagBold className='text-[#9198A1]' />
             <span className='font-medium text-[#9198A1] text-sm'>Tags</span>
           </button>

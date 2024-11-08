@@ -29,16 +29,11 @@ export const TopBar = ({ containerNav }) => {
     setIsVisible(true);
   };
 
-  const toggleLogoutVisibility = () => {
-    setLogoutVisible((prev) => !prev);
-  };
-
   const clickFuera = (event) => {
     if (
       refContainInput.current && !refContainInput.current.contains(event.target)
     ) {
       setIsVisible(false);
-      setLogoutVisible(false);
     }
   };
 
@@ -71,8 +66,8 @@ export const TopBar = ({ containerNav }) => {
             </Link>
           </button>
 
-          <div className='flex gap-7'>
-            <button onClick={showEntry} className='border border-[#9198a1] rounded-lg bg-[#010409] w-[320px] px-2'>
+          <div className='flex gap-2'>
+            <button onClick={showEntry} className='hidden lg:block border border-[#9198a1] rounded-lg bg-[#010409] w-[320px] px-2 mr-4'>
               <span className='text-[#9198a1] text-sm flex items-center'>
                 <FiSearch className='mr-2' />
                 Type
@@ -80,7 +75,7 @@ export const TopBar = ({ containerNav }) => {
                 to search
               </span>
             </button>
-            <div className='hiiden lg:flex items-center gap-2'>
+            <div className='hidden lg:flex items-center gap-2'>
               <button className='flex items-center gap-2 p-1.5 border border-[#9198a1] rounded-lg'>
                 <VscAdd className='text-[#9198a1]' />
                 <VscTriangleDown className='text-[#9198a1] text-sm' />
@@ -94,10 +89,10 @@ export const TopBar = ({ containerNav }) => {
               <button>
                 <VscInbox className='text-[#9198a1] text-3xl p-1 border border-[#9198a1] rounded-lg' />
               </button>
-              <button id='options' onClick={toggleLogoutVisibility}>
-                <VscGithub className='text-[#2d3036] text-3xl' />
-              </button>
             </div>
+                <button>
+                  <VscGithub className='text-[#3b3e44] text-3xl' />
+                </button>
                 <button
                   onClick={Logout}
                   className='text-white font-bold bg-slate-700 py-1.5 px-2 text-sm rounded-md'

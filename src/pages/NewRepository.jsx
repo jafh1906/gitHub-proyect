@@ -11,10 +11,10 @@ export const NewRepository = () => {
         <header>
             <TopBar/>
         </header>
-        <main>
+        <main className='bg-[#0d1117]'>
             <CreateRepository/>
         </main>
-        <footer>
+        <footer className='bg-[#0d1117]'>
             <Footer/>
         </footer>
     </div>

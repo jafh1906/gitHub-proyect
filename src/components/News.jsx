@@ -6,7 +6,7 @@ export const News = () => {
   return (
     <>
     <div className='pr-6 space-y-6 mb-4'>
-      <div className="bg-black flex items-center justify-center mt-10 w-[320px]">
+      <div className="bg-black flex items-center justify-center mt-10 w-auto">
         <div 
           className="w-full rounded-lg p-4 space-y-7 text-white"
           style={{
