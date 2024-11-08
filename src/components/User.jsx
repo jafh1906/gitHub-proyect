@@ -71,7 +71,7 @@ export const User = ({ userId }) => {
   if (userData.error) return <p>Error al cargar información del usuario.</p>;
 
   return (
-    <div className='mt-10 px-6'>
+    <div className='mt-10 px-6 lg:flex gap-10 h-screen'>
       <div className='w-[250px]'>
         <div>
           <img className='object-contain border border-[#6d737a] rounded-full' src={fotoUser} alt="User Avatar" />
@@ -87,18 +87,18 @@ export const User = ({ userId }) => {
             <p className='text-white font-bold text-sm hover:text-blue-600'>0 <span className='text-[#9198a1] font-normal hover:text-blue-600'>following</span></p>
           </div>
         </div>
-        <div id='buckets' className='mt-4'>
-          <h2 className='text-lg font-bold'>Buckets</h2>
-          <ul>
-            {userData.buckets.length > 0 ? (
-              userData.buckets.map((bucket) => (
-                <li key={bucket.name} className='text-white font-medium'>{bucket.name}</li>
-              ))
-            ) : (
-              <p className='text-[#6d737a]'>No hay buckets disponibles</p>
-            )}
-          </ul>
-        </div>
+      </div>
+      <div id='buckets' className='mt-4'>
+        <h2 className='text-lg font-bold text-white'>Repositorios</h2>
+        <ul>
+          {userData.buckets.length > 0 ? (
+            userData.buckets.map((bucket) => (
+              <li key={bucket.name} className='text-white font-medium'>{bucket.name}</li>
+            ))
+          ) : (
+            <p className='text-[#6d737a]'>No hay buckets disponibles</p>
+          )}
+        </ul>
       </div>
     </div>
   );

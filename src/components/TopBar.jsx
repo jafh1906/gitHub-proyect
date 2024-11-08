@@ -103,7 +103,7 @@ export const TopBar = ({ containerNav }) => {
 
         {containerNav && (
           <div>
-            <nav className='flex gap-3'>
+            <nav className='hidden lg:flex gap-3 pb-2'>
               <div>
                 <button className='flex gap-2 items-center'>
                   <FiBookOpen  className='text-[#9198a1] text-lg'/>
