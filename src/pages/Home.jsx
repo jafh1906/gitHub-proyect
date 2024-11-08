@@ -13,7 +13,7 @@ export const Home = () => {
           <TopBar containerNav={false}/>
       </header>
       <main className='lg:flex lg:flex-row flex-col'>
-        <div className='sticky top-0 h-screen overflow-auto'>
+        <div className='lg:sticky lg:top-0 lg:h-screen lg:overflow-auto'>
           <TopRepositories/>
         </div>
         <div>
@@ -25,7 +25,7 @@ export const Home = () => {
               <News/>
             </div>
           </div>
-          <div>
+          <div className=''>
             <Footer/>
           </div>
         </div>

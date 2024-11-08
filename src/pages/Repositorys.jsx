@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer';
 
 export const Repositorys = () => {
     const { bucketId } = useParams();
+    const {userId} = useParams();
 
   return (
     <>
@@ -13,9 +14,9 @@ export const Repositorys = () => {
         <TopBar/>
     </header>
     <main>
-        <Files bucketId={ bucketId }/>
+        <Files bucketId={ bucketId } userId={userId}/>
     </main>
-    <footer className='bg-[#0d1117]'>
+    <footer className='bg-[#0d1117] flex justify-center'>
       <Footer/>
     </footer>
     </>

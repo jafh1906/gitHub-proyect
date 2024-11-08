@@ -53,16 +53,16 @@ import React, { useEffect, useState } from 'react';
 import fotoUser from '../assets/logoGitHubN.png';
 import { GoPeople } from "react-icons/go";
 import { getUserData } from '../helpers/getuser';
-import { getUserIdFromURL } from '../helpers/storage';
 
-export const User = () => {
-  const userId = getUserIdFromURL();
+export const User = ({ userId }) => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const data = await getUserData(userId);
-      setUserData(data);
+      if (userId) {
+        const data = await getUserData(userId);
+        setUserData(data);
+      }
     };
     fetchUserData();
   }, [userId]);

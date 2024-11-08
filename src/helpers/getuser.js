@@ -88,25 +88,37 @@ export const getOwnerName = async (bucketId) => {
 export const getUserData = async (userId) => {
     try {
       // Obtén el nombre de usuario desde la tabla 'profiles'
-      const { data: userData, error: userError } = await supabase
+      const { data: userData, error: userError, status } = await supabase
         .from('profiles')
         .select('username')
         .eq('id', userId)
         .single();
   
-      if (userError) throw userError;
+      if (userError && status === 404) {
+        console.error('Usuario no encontrado:', userError);
+        return { error: 'Usuario no encontrado' };
+      } else if (userError) {
+        console.error('Error al obtener el perfil del usuario:', userError);
+        throw userError;
+      }
   
       // Obtén los nombres de los buckets pertenecientes al usuario
-      const { data: buckets, error: bucketsError } = await supabase
+      const { data: buckets, error: bucketsError, status: bucketsStatus } = await supabase
         .from('buckets')
         .select('name')
-        .eq('owner', userId);
+        .eq('owner', userId); // Filtramos los buckets por el owner
   
-      if (bucketsError) throw bucketsError;
+      if (bucketsError && bucketsStatus === 404) {
+        console.error('Buckets no encontrados:', bucketsError);
+        return { username: userData.username, buckets: [] }; // Sin buckets pero sin error
+      } else if (bucketsError) {
+        console.error('Error al obtener buckets:', bucketsError);
+        throw bucketsError;
+      }
   
       return { username: userData.username, buckets: buckets || [] };
     } catch (error) {
-      console.error('Error fetching user data:', error);
-      return { error };
+      console.error('Error al obtener los datos del usuario:', error);
+      return { error: 'Error al obtener los datos del usuario' };
     }
   };

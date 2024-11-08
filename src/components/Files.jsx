@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export const Files = ({ bucketId }) => {
   const [bucketInfo, setBucketInfo] = useState(null);
-  const [bucketDescription, setBucketDescription] = useState(''); // Estado para la descripción del bucket
+  const [bucketDescription, setBucketDescription] = useState('');
   const [files, setFiles] = useState([]);
   const [userName, setUserName] = useState('');
   const session = useSession(); 
@@ -35,7 +35,6 @@ export const Files = ({ bucketId }) => {
             setBucketInfo(data);
         }
 
-        // Obtener la descripción del bucket desde la tabla `bucket_description`
         const { data: descriptionData, error: descriptionError } = await supabase
           .from('bucket_description')
           .select('description')
@@ -60,7 +59,6 @@ export const Files = ({ bucketId }) => {
   }, [bucketId]);
 
 
-  // Función para obtener archivos y carpetas desde el bucket de Supabase
   const fetchFiles = async () => {
     const { data, error } = await supabase.storage
       .from(bucketId)
@@ -71,7 +69,7 @@ export const Files = ({ bucketId }) => {
       return;
     }
 
-    const folderMap = {}; // Estructura para almacenar carpetas y sus archivos
+    const folderMap = {};
 
     data.forEach((item) => {
       const [folderName, ...rest] = item.name.split('/');
@@ -79,14 +77,13 @@ export const Files = ({ bucketId }) => {
         folderMap[folderName] = [];
       }
       if (rest.length) {
-        folderMap[folderName].push(item); // Agrega el archivo a la carpeta correspondiente
+        folderMap[folderName].push(item);
       }
     });
 
-    setFiles(folderMap); // Guarda la estructura en el estado
+    setFiles(folderMap);
   };
 
-  // Función para manejar la subida de una carpeta
   const handleFolderUpload = async (event) => {
     const folderFiles = event.target.files;
 
@@ -108,7 +105,7 @@ export const Files = ({ bucketId }) => {
 
     const handleDownload = async () => {
       console.log("Descargando archivos del bucket...");
-      await Download(bucketId); // Llama a la función Download pasando el bucketId
+      await Download(bucketId);
     };
 
     const handleDeleteBucket = async () => {
@@ -116,11 +113,9 @@ export const Files = ({ bucketId }) => {
       
       if (error) {
         console.error('Error al eliminar el bucket en cascada:', error);
-        alert('No se pudo eliminar el bucket.');
+        alert('error deleting files');
       } else {
-        alert('Bucket eliminado exitosamente.');
         navigate("/Home")
-        // Aquí puedes actualizar el estado o redirigir al usuario, si es necesario
       }
     };
     
@@ -178,7 +173,7 @@ export const Files = ({ bucketId }) => {
       <div className='mt-4'>
         <div className='flex items-center gap-1.5 bg-[#151b23] py-4 px-3 rounded-t-md border'>
           <VscGithub className='text-[#26292F] bg-black rounded-full text-2xl' />
-          <Link to={`/OverviewProfile?user=${bucketInfo?.owner}`}
+          <Link to={`/OverviewProfile/${bucketInfo?.owner}`}
            className='text-sm font-medium'>{userName}</Link>
         </div>
         <div id='archivos' className='border-b border-x rounded-b-md'>
@@ -208,7 +203,7 @@ export const Files = ({ bucketId }) => {
               className="text-red-500 bg-[#212830] px-4 py-2 rounded-lg mt-4 hover:bg-[#262c36]"
               onClick={handleDeleteBucket}
             >
-              Eliminar Bucket
+              Delate repository
             </button>
           )}
         </div>

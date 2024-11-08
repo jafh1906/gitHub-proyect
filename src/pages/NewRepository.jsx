@@ -14,7 +14,7 @@ export const NewRepository = () => {
         <main className='bg-[#0d1117]'>
             <CreateRepository/>
         </main>
-        <footer className='bg-[#0d1117]'>
+        <footer className='bg-[#0d1117] flex justify-center'>
             <Footer/>
         </footer>
     </div>

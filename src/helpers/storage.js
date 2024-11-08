@@ -1,7 +1,6 @@
 import { supabase } from "../supabase/client";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { useParams } from "react-router-dom";
 
 export const createBucket = async (bucketName, description) => {
     // Crear el bucket
@@ -217,11 +216,18 @@ export const Download = async (bucketName) => {
             }
           }
       
+          // Vaciar el bucket
+          const { error: emptyError } = await supabase.storage.emptyBucket(bucketId);
+          if (emptyError) {
+            console.error('Error al vaciar el bucket:', emptyError);
+            return { error: emptyError };
+          }
+      
           // Eliminar el bucket vacío
-          const { error: bucketError } = await supabase.storage.emptyBucket(bucketId); //deleteBucket
-          if (bucketError) {
-            console.error('Error al eliminar el bucket:', bucketError);
-            return { error: bucketError };
+          const { error: deleteBucketError } = await supabase.storage.deleteBucket(bucketId);
+          if (deleteBucketError) {
+            console.error('Error al eliminar el bucket:', deleteBucketError);
+            return { error: deleteBucketError };
           }
       
           console.log(`Bucket ${bucketId} eliminado exitosamente.`);
@@ -231,8 +237,43 @@ export const Download = async (bucketName) => {
           return { error };
         }
       };
+      
 
-      export const getUserIdFromURL = () => {
-        const { userId } = useParams();
-        return userId;
-      };
+    // export const deleteBucketCascade = async (bucketId) => {
+    //     try {
+    //       // Listar todos los archivos dentro del bucket
+    //       const { data: files, error: listError } = await supabase.storage
+    //         .from(bucketId)
+    //         .list('', { limit: 100 });
+      
+    //       if (listError) {
+    //         console.error('Error al listar archivos:', listError);
+    //         return { error: listError };
+    //       }
+      
+    //       // Eliminar cada archivo
+    //       for (const file of files) {
+    //         const { error: deleteError } = await supabase.storage
+    //           .from(bucketId)
+    //           .remove([file.name]);
+              
+    //         if (deleteError) {
+    //           console.error(`Error al eliminar archivo ${file.name}:`, deleteError);
+    //           return { error: deleteError };
+    //         }
+    //       }
+      
+    //       // Eliminar el bucket vacío
+    //       const { error: bucketError } = await supabase.storage.emptyBucket(bucketId); //deleteBucket
+    //       if (bucketError) {
+    //         console.error('Error al eliminar el bucket:', bucketError);
+    //         return { error: bucketError };
+    //       }
+      
+    //       console.log(`Bucket ${bucketId} eliminado exitosamente.`);
+    //       return { success: true };
+    //     } catch (error) {
+    //       console.error('Error al eliminar el bucket en cascada:', error);
+    //       return { error };
+    //     }
+    //   };

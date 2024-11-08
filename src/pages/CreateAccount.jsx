@@ -109,7 +109,7 @@ export const CreateAccount = () => {
                     You have an account? <Link to='/Login' className='text-blue-500 hover:underline hover:text-blue-500 text-sm'>Sign in</Link>
                 </p>
             </div>
-            <div className='lg:flex flex flex-wrap gap-3 mt-12'>
+            <div className='lg:flex flex justify-center flex-wrap gap-3 mt-12'>
                 <p className='text-xs text-[#9198a1] cursor-pointer hover:underline hover:text-blue-500'>Terms</p>
                 <p className='text-xs text-[#9198a1] cursor-pointer hover:underline hover:text-blue-500'>Privacy</p>
                 <p className='text-xs text-[#9198a1] cursor-pointer hover:underline hover:text-blue-500'>Docs</p>

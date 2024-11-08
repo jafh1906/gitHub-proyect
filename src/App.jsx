@@ -23,7 +23,7 @@ function App() {
             <Route path="/Login" element={<Login/>}/>
             <Route path="/CreateAccount" element={<CreateAccount/>}/>
             <Route path="/Home" element={<Home/>}/>
-            <Route path="/OverviewProfile" element={<OverviewProfile/>}/>
+            <Route path="/OverviewProfile/:userId" element={<OverviewProfile />} />
             {/* <Route path="/overview-profile/:userId" element={<User />} /> */}
           </Routes>
         </div>
