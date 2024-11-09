@@ -60,31 +60,7 @@ export const getOwnerName = async (bucketId) => {
     return profileData.username;
 };
 
-// export const getUserData = async (userId) => {
-//     try {
-//       // Obtener el nombre de usuario desde la tabla `profiles`
-//       const { data: userProfile, error: userProfileError } = await supabase
-//         .from('profiles')
-//         .select('username')
-//         .eq('id', userId)
-//         .single();
-  
-//       if (userProfileError) throw userProfileError;
-  
-//       // Obtener los nombres de los buckets que pertenecen al usuario
-//       const { data: userBuckets, error: userBucketsError } = await supabase
-//         .from('bucket_metadata')
-//         .select('name')
-//         .eq('owner', userId);
-  
-//       if (userBucketsError) throw userBucketsError;
-  
-//       return { username: userProfile.username, buckets: userBuckets };
-//     } catch (error) {
-//       console.error('Error obteniendo los datos del usuario:', error);
-//       return { error };
-//     }
-//   };
+
 export const getUserData = async (userId) => {
     try {
       // Obtén el nombre de usuario desde la tabla 'profiles'

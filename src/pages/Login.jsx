@@ -3,10 +3,6 @@ import logoGitHub1 from "../assets/logoGitHubB.png";
 import { supabase } from '../supabase/client';
 import { Link, useNavigate } from 'react-router-dom';
 
-
-
-
-
 export const Login = () => {
 
     const [email, setEmail] = useState('');
